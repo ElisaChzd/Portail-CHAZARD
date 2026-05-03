@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Portail Chazard</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e8b84b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Portail" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
 
@@ -287,6 +291,10 @@
 
   <script>
     const PORTAIL_URL = "http://90.63.44.104:80/relay/0?turn=on";
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/Portail-CHAZARD/sw.js');
+    }
 
     function setStatus(type, message) {
       const el = document.getElementById('status');
