@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Portail Chazard</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e8b84b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Portail" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #e8b84b;
+      --accent2: #f0d080;
+      --text: #f0ede8;
+      --muted: #5a5a6e;
+      --success: #4caf80;
+      --danger: #e05555;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background atmosphere */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(232,184,75,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% -10%, rgba(100,80,200,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+    }
+
+    .header .icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 4px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .header p {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Main button */
+    .btn-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ring {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,184,75,0.2);
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    .btn-ring:nth-child(2) {
+      width: 260px;
+      height: 260px;
+      border-color: rgba(232,184,75,0.08);
+      animation-delay: 0.8s;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 0.5; }
+    }
+
+    .btn-portail {
+      position: relative;
+      z-index: 2;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: none;
+      background: radial-gradient(circle at 35% 35%, #f5d06a, #c49020);
+      box-shadow:
+        0 0 40px rgba(232,184,75,0.3),
+        0 8px 32px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-portail:active {
+      transform: scale(0.94);
+      box-shadow:
+        0 0 20px rgba(232,184,75,0.2),
+        0 4px 16px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .btn-portail .btn-icon {
+      font-size: 40px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .btn-portail .btn-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      letter-spacing: 3px;
+      color: #1a0f00;
+      opacity: 0.85;
+    }
+
+    /* Status */
+    .status {
+      width: 100%;
+      min-height: 56px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 20px;
+      transition: border-color 0.3s ease;
+    }
+
+    .status.success { border-color: var(--success); }
+    .status.error { border-color: var(--danger); }
+    .status.loading { border-color: var(--accent); }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+      transition: background 0.3s ease;
+    }
+
+    .status.success .status-dot { background: var(--success); }
+    .status.error .status-dot { background: var(--danger); }
+    .status.loading .status-dot {
+      background: var(--accent);
+      animation: blink 0.8s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .status.success .status-text { color: var(--success); }
+    .status.error .status-text { color: var(--danger); }
+    .status.loading .status-text { color: var(--accent); }
+
+    /* URL config */
+    .config {
+      width: 100%;
+    }
+
+    .config label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .config input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .config input:focus {
+      border-color: var(--accent);
+    }
+
+    .config input::placeholder {
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <div class="header">
+      <div class="icon">🏠</div>
+      <h1>Portail Chazard</h1>
+    </div>
+
+    <div class="btn-wrap">
+      <div class="btn-ring"></div>
+      <div class="btn-ring"></div>
+      <button class="btn-portail" onclick="ouvrirPortail()">
+        <span class="btn-icon">🔓</span>
+        <span class="btn-label">Ouvrir</span>
+      </button>
+    </div>
+
+    <div class="status" id="status">
+      <div class="status-dot"></div>
+      <span class="status-text">En attente</span>
+    </div>
+
+    <div class="footer">Appuyez pour déclencher l'ouverture</div>
+
+  </div>
+
+  <script>
+    const PORTAIL_URL = "http://90.63.44.104:80/relay/0?turn=on";
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/Portail-CHAZARD/sw.js');
+    }
+
+    function setStatus(type, message) {
+      const el = document.getElementById('status');
+      el.className = 'status ' + type;
+      el.querySelector('.status-text').textContent = message;
+    }
+
+    async function ouvrirPortail() {
+      setStatus('loading', 'Envoi de la commande…');
+      try {
+        await fetch(PORTAIL_URL, { method: 'GET', mode: 'no-cors' });
+        setStatus('success', 'Commande envoyée ✓');
+        setTimeout(() => setStatus('', 'En attente'), 3000);
+      } catch (e) {
+        setStatus('error', 'Erreur de connexion');
+        setTimeout(() => setStatus('', 'En attente'), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
