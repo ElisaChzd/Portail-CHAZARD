@@ -305,13 +305,12 @@
     async function ouvrirPortail() {
       setStatus('loading', 'Envoi de la commande…');
       try {
-        const response = await fetch(PORTAIL_URL, { method: 'GET' });
-        const text = await response.text();
-        setStatus('success', 'OK: ' + text);
-        setTimeout(() => setStatus('', 'En attente'), 5000);
+        await fetch(PORTAIL_URL, { method: 'GET', mode: 'no-cors' });
+        setStatus('success', 'Commande envoyée ✓');
+        setTimeout(() => setStatus('', 'En attente'), 3000);
       } catch (e) {
         setStatus('error', 'Erreur: ' + e.message);
-        setTimeout(() => setStatus('', 'En attente'), 5000);
+        setTimeout(() => setStatus('', 'En attente'), 3000);
       }
     }
   </script>
